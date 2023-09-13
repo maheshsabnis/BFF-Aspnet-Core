@@ -1,0 +1,51 @@
+﻿@page "/bffdatafetch"
+@using Com.Blazor.UI.Models;
+@inject HttpClient httpClient
+
+<PageTitle>Product Catalog with Back-End for Front-End Pattern</PageTitle>
+
+<h1>Product Catalog Back-End for Front-End Pattern</h1>
+
+<p>This component shows the Products Catalog usign Back-End for Front-End Pattern</p>
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Manufacturer Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Tax</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.ProductName</td>
+                    <td>@product.ManufacturerName</td>
+                    <td>@product.Description</td>
+                    <td>@product.Price</td>
+                    <td>@product.Tax</td>
+                    <td>@product.TotalPrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<ProductCatalog>? products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await httpClient
+            .GetFromJsonAsync<IEnumerable<ProductCatalog>>("http://localhost:8000/api/ProductCatalogBFF");
+    }
+}

@@ -1,0 +1,55 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+@inject Logic logic
+@using Com.Blazor.UI.Models
+@using Com.Blazor.UI.Domain
+
+<PageTitle>Product Catalog</PageTitle>
+
+<h1>Product Catalog</h1>
+
+<p>This component shows the Products Catalog.</p>
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Manufacturer Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Tax</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                   <td>@product.ProductName</td>
+                   <td>@product.ManufacturerName</td>
+                   <td>@product.Description</td>
+                   <td>@product.Price</td>
+                   <td>@product.Tax</td>
+                   <td>@product.TotalPrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<ProductCatalog>? products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await logic.GetProductCatalog();         
+    }
+
+     
+}
